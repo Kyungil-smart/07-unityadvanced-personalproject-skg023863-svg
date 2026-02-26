@@ -602,11 +602,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c26629bd8cb71d468066a68ab3ab65b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  _moveInput: {x: 0, y: 0}
   _playerSpeed: 5
+  moveInput: {x: 0, y: 0}
   _weaponPivot: {fileID: 252720137}
   _weaponRadius: 1
-  weaponSprite: {fileID: 1296224119}
+  _weaponSprite: {fileID: 1296224119}
 --- !u!95 &997183082
 Animator:
   serializedVersion: 7
