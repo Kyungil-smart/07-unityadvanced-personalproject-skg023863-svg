@@ -10,12 +10,14 @@ public class IdleState : IState
     }
     public void Enter()
     {
+        // Idle 애니메이션 실행
         _player.SetMove(0f);
     }
 
     public void Update()
     {
-        if (_player._moveInput != Vector2.zero)
+        // MoveInput이 (0, 0)이 아니면 Move 실행
+        if (_player.moveInput != Vector2.zero)
         {
             _player.ChangeState(_player.move);
         }

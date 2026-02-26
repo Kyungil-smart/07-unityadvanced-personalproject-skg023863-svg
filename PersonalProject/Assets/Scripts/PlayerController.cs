@@ -5,14 +5,20 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     // 컴포넌트
-    private Rigidbody2D _rb;
+    private Rigidbody2D _rigidbody2D;
     private SpriteRenderer _bodySprite;
     private PlayerInput _playerInput; 
     private Animator _animator;
     private StateMachine _stateMachine;
     
-    public Vector2 _moveInput; // Actions로부터 받을 Vector2 값 저장
     [SerializeField] private float _playerSpeed = 5f; // Player 속도
+    public Vector2 moveInput; // Actions로부터 받을 Vector2 값 저장
+    private Vector2 _playerPosition; // transform.position이 Vector3이라서 Vector2로 편하게 쓰려고
+    private Vector2 _mousePoint; // 마우스 좌표
+    
+    [SerializeField] private Transform _weaponPivot; // 자식 오브젝트 WeaponPivot의 Transform
+    [SerializeField] private float _weaponRadius = 1f; // WeaponPivot과 Player의 거리
+    [SerializeField] private SpriteRenderer _weaponSprite; //무기 스프라이트
 
     // State 
     public IdleState idle;
@@ -20,7 +26,7 @@ public class PlayerController : MonoBehaviour
     
     void Awake()
     {
-        _rb = GetComponent<Rigidbody2D>();
+        _rigidbody2D = GetComponent<Rigidbody2D>();
         _bodySprite = GetComponent<SpriteRenderer>();
         _playerInput = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
@@ -40,6 +46,7 @@ public class PlayerController : MonoBehaviour
     {
         _stateMachine.Update();
         LookMouse();
+        WeaponRotate();
     }
 
     void FixedUpdate()
@@ -61,30 +68,48 @@ public class PlayerController : MonoBehaviour
 
     void OnMove(InputAction.CallbackContext ctx)
     {
-        _moveInput = ctx.ReadValue<Vector2>();
+        moveInput = ctx.ReadValue<Vector2>();
     }
 
     // Player의 움직임 함수
     void Movement()
     {
-        _rb.linearVelocity = _moveInput * _playerSpeed;
+        _rigidbody2D.linearVelocity = moveInput * _playerSpeed;
     }
     
     // Player가 마우스 방향에 따라 스프라이트 좌우 바꿔주는 함수
     void LookMouse()
     {
-        // 마우스 좌표값
-        Vector2 mousePoint = Camera.main.ScreenToWorldPoint(
+        // 마우스 좌표값 구하기
+        _mousePoint = Camera.main.ScreenToWorldPoint(
             Mouse.current.position.ReadValue());
         
         // Player의 좌표로부터 마우스 좌표까지의 방향
-        Vector2 dir = mousePoint - (Vector2)transform.position;
+        _playerPosition = transform.position;
+        Vector2 dir = _mousePoint - _playerPosition;
         
-        // 방향벡터의 x딱 0(캐릭터 바로 위)일 경우에는 스프라이트 안 바뀜
+        // 방향의 x값이 딱 0(캐릭터 바로 위)일 경우에는 스프라이트 안 바뀜
         if (dir.x != 0)
         {
-            // 방향벡터의 x가 0보다 작으면 true(좌측 바라봄), 0보다 크면 false(우측 바라봄)
+            // 방향의 x값이 0보다 작으면 true(좌측 바라봄), 0보다 크면 false(우측 바라봄)
             _bodySprite.flipX = dir.x < 0;
+        }
+    }
+    
+    void WeaponRotate()
+    {
+        // 마우스 좌표와 Player좌표간의 방향벡터
+        Vector2 dir = (_mousePoint - _playerPosition).normalized;
+
+        // Player와 WeaponPivot간의 거리
+        _weaponPivot.position = _playerPosition + dir * _weaponRadius;
+        
+        // 무기가 마우스를 바라보도록(조건 : 스프라이트가 오른쪽으로 향하고 있어야 함)
+        _weaponPivot.right = dir;
+
+        if (dir.x != 0)
+        {
+            _weaponSprite.flipY = dir.x < 0;
         }
     }
     
