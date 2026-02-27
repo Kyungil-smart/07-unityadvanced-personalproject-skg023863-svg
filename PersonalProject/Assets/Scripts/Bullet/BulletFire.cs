@@ -4,6 +4,7 @@ public class BulletFire : MonoBehaviour
 {
     [SerializeField] private float _bulletSpeed= 13f; // 총알 속도
     [SerializeField] private float _bulletLifeTime = 1f; // 총알 생명주기
+    [SerializeField] private float _damage = 10f;
     private Vector2 _dir; // 총알 방향
     private float angle;  // 총알 각도 
     
@@ -34,5 +35,10 @@ public class BulletFire : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         Destroy(gameObject);
+        
+        if (other.TryGetComponent<IDamagable>(out IDamagable damageable))
+        {
+            damageable.TakeDamage(_damage);
+        }
     }
 }
