@@ -60,13 +60,17 @@ public class PlayerController : MonoBehaviour , IDamagable
     void Update()
     {
         _stateMachine.Update();
-        LookMouse();
-        WeaponRotate();
     }
 
     void FixedUpdate()
     {
         Movement();
+    }
+
+    void LateUpdate()
+    {
+        LookMouse();
+        WeaponRotate();
     }
 
     void OnEnable()
@@ -144,11 +148,11 @@ public class PlayerController : MonoBehaviour , IDamagable
         // 마우스 좌표와 Player좌표간의 방향벡터의 x가 0보다 작을 경우 _weaponPivot 반전
         if (dir.x < 0)
         {
-            _weaponPivot.localScale = new Vector3(1, -1, 0);
+            _weaponPivot.localScale = new Vector3(1, -1, 1);
         }
         else
         {
-            _weaponPivot.localScale = new Vector3(1, 1, 0);
+            _weaponPivot.localScale = new Vector3(1, 1, 1);
         }
     }
     
