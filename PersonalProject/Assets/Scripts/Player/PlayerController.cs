@@ -87,8 +87,8 @@ public class PlayerController : MonoBehaviour
     // 총알 발사 함수
     void ShootBullet()
     {
-        Vector2 dir = _mousePoint - (Vector2)_muzzlePoint.position;
-        GameObject bullet = Instantiate(_bulletPrefab, _muzzlePoint.position, Quaternion.identity);
+        Vector2 dir = _muzzlePoint.right;
+        GameObject bullet = Instantiate(_bulletPrefab, _muzzlePoint.position, _muzzlePoint.rotation);
         bullet.GetComponent<BulletFire>().Init(dir);
     }
 
