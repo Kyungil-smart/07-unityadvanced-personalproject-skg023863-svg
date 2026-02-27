@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,7 +15,10 @@ public class PlayerController : MonoBehaviour , IDamagable
     [Header("Player의 스탯")] 
     [SerializeField] private float _maxHP = 100f; // Player 최대 체력
     [SerializeField] private float _playerSpeed = 5f; // Player 속도
+    [SerializeField] private float _invincibleTime = 0.5f;
     private float _currentHP; // Player 현재 체력
+    private bool _isInvincible;
+    private WaitForSeconds  _invincibleWait;
     
     [Header("Player와 무기 사이의 거리")]
     [SerializeField] private float _weaponRadius = 1f; // WeaponPivot과 Player의 거리
@@ -41,6 +44,7 @@ public class PlayerController : MonoBehaviour , IDamagable
         _animator = GetComponent<Animator>();
         
         _currentHP = _maxHP;
+        _invincibleWait =  new WaitForSeconds(_invincibleTime);
         
         _stateMachine = new StateMachine();
 
@@ -161,12 +165,27 @@ public class PlayerController : MonoBehaviour , IDamagable
 
     public void TakeDamage(float damage)
     {
+        if (_isInvincible) return;
+        
         _currentHP -= damage;
+        
+        StartCoroutine(InvincibleCoroutine());
         Debug.Log(_currentHP);
         if (_currentHP <= 0)
         {
             Die();
         }
+    }
+
+    private IEnumerator InvincibleCoroutine()
+    {
+        _isInvincible = true;
+        // 여기서 깜빡임 효과 추가 가능
+
+        yield return _invincibleWait;
+
+        _isInvincible = false;
+        yield break;
     }
 
     public void Die()
