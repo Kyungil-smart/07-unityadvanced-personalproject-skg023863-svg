@@ -12,13 +12,16 @@ public class PlayerController : MonoBehaviour
     private StateMachine _stateMachine;
     
     [SerializeField] private float _playerSpeed = 5f; // Player 속도
-    public Vector2 moveInput; // Actions로부터 받을 Vector2 값 저장
+    public Vector2 moveInput; // Actions로부터 받을 Vector2값 저장
     private Vector2 _playerPosition; // transform.position이 Vector3이라서 Vector2로 편하게 쓰려고
     private Vector2 _mousePoint; // 마우스 좌표
     
     [SerializeField] private Transform _weaponPivot; // 자식 오브젝트 WeaponPivot의 Transform
     [SerializeField] private float _weaponRadius = 1f; // WeaponPivot과 Player의 거리
     [SerializeField] private SpriteRenderer _weaponSprite; //무기 스프라이트
+    
+    [SerializeField] private GameObject _bulletPrefab; // 총알 prefab
+    [SerializeField] private Transform _muzzlePoint; // 총구 위치
 
     // State 
     public IdleState idle;
@@ -58,20 +61,38 @@ public class PlayerController : MonoBehaviour
     {
         _playerInput.actions["Move"].performed += OnMove;
         _playerInput.actions["Move"].canceled += OnMove;
+        _playerInput.actions["Shoot"].performed += OnShoot;
     }
 
     void OnDisable()
     {
         _playerInput.actions["Move"].performed -= OnMove;
         _playerInput.actions["Move"].canceled -= OnMove;
+        _playerInput.actions["Shoot"].performed -= OnShoot;
     }
 
     void OnMove(InputAction.CallbackContext ctx)
     {
         moveInput = ctx.ReadValue<Vector2>();
     }
+    
+    void OnShoot(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            ShootBullet();
+        }
+    }
+    
+    // 총알 발사 함수
+    void ShootBullet()
+    {
+        Vector2 dir = _mousePoint - (Vector2)_muzzlePoint.position;
+        GameObject bullet = Instantiate(_bulletPrefab, _muzzlePoint.position, Quaternion.identity);
+        bullet.GetComponent<BulletFire>().Init(dir);
+    }
 
-    // Player의 움직임 함수
+    // Player의 움직임을 담당하는 함수
     void Movement()
     {
         _rigidbody2D.linearVelocity = moveInput * _playerSpeed;
@@ -96,6 +117,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     
+    // 무기의 방향을 마우스 좌표에 따라 스프라이트를 좌우 바꿔주는 함수
     void WeaponRotate()
     {
         // 마우스 좌표와 Player좌표간의 방향벡터
@@ -104,12 +126,17 @@ public class PlayerController : MonoBehaviour
         // Player와 WeaponPivot간의 거리
         _weaponPivot.position = _playerPosition + dir * _weaponRadius;
         
-        // 무기가 마우스를 바라보도록(조건 : 스프라이트가 오른쪽으로 향하고 있어야 함)
+        // 무기(총구, 칼 끝)가 마우스를 바라보도록(조건 : 스프라이트가 오른쪽으로 향하고 있어야 함)
         _weaponPivot.right = dir;
-
-        if (dir.x != 0)
+        
+        // 마우스 좌표와 Player좌표간의 방향벡터의 x가 0보다 작을 경우 _weaponPivot 반전
+        if (dir.x < 0)
         {
-            _weaponSprite.flipY = dir.x < 0;
+            _weaponPivot.localScale = new Vector3(1, -1, 0);
+        }
+        else
+        {
+            _weaponPivot.localScale = new Vector3(1, 1, 0);
         }
     }
     
