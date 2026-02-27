@@ -537,6 +537,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StopAndRunMonster
   _maxHP: 100
   _speed: 3
+  _damage: 10
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -837,11 +838,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c26629bd8cb71d468066a68ab3ab65b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  _maxHP: 100
   _playerSpeed: 5
-  moveInput: {x: 0, y: 0}
-  _weaponPivot: {fileID: 252720137}
   _weaponRadius: 1
+  _weaponPivot: {fileID: 252720137}
   _weaponSprite: {fileID: 1296224119}
+  moveInput: {x: 0, y: 0}
   _bulletPrefab: {fileID: 120423794264757138, guid: e711970f12a62c141a115f5e3f17246c, type: 3}
   _muzzlePoint: {fileID: 267762364}
 --- !u!95 &997183082

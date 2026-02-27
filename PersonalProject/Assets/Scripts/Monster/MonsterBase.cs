@@ -10,7 +10,7 @@ public abstract class MonsterBase : MonoBehaviour , IDamagable
     [Header("몬스터 스탯")]
     [SerializeField] protected float _maxHP; // 몬스터 최대 체력
     [SerializeField] protected float _speed; // 몬스터 스피드
-    [SerializeField] protected float _damage;
+    [SerializeField] protected float _damage; // 몬스터 공격력
     
     protected float _currentHP;
     protected Transform _playerTransform; // 플레이어 좌표
@@ -60,9 +60,10 @@ public abstract class MonsterBase : MonoBehaviour , IDamagable
         }
     }
     
-    void OnCollisionEnter2D(Collision2D collision)
+    // Player 공격
+    void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Player"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             if (collision.collider.TryGetComponent<IDamagable>(out var damageable))
             {
@@ -70,6 +71,8 @@ public abstract class MonsterBase : MonoBehaviour , IDamagable
             }
         }
     }
+    
+    
     
     public void SetMove(float value)
     {
