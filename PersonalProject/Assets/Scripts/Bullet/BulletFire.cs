@@ -12,9 +12,10 @@ public class BulletFire : MonoBehaviour
     {
         _dir = dir.normalized;
         
-        // 총알이 마우스가 바라보는 각도에 따라서 총알도 그에 맞게 회전
-        angle = Mathf.Atan2(_dir.y, _dir.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+        // 총알이 총구가 바라보는 각도에 따라서 총알도 그에 맞게 회전
+        transform.right = _dir;
+        // angle = Mathf.Atan2(_dir.y, _dir.x) * Mathf.Rad2Deg;
+        // transform.rotation = Quaternion.Euler(0, 0, angle);
         
         Destroy(gameObject, _bulletLifeTime);
     }
