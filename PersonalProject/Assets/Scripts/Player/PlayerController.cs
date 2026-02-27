@@ -2,23 +2,29 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour , IDamagable
 {
     // 컴포넌트
     private Rigidbody2D _rigidbody2D;
     private SpriteRenderer _bodySprite;
     private PlayerInput _playerInput; 
     private Animator _animator;
-    private StateMachine _stateMachine;
     
+    private StateMachine _stateMachine;
+
+    [Header("Player의 스탯")] 
+    [SerializeField] private float _maxHP = 100f; // Player 최대 체력
     [SerializeField] private float _playerSpeed = 5f; // Player 속도
+    private float _currentHP; // Player 현재 체력
+    
+    [Header("Player와 무기 사이의 거리")]
+    [SerializeField] private float _weaponRadius = 1f; // WeaponPivot과 Player의 거리
+    [SerializeField] private Transform _weaponPivot; // 자식 오브젝트 WeaponPivot의 Transform
+    [SerializeField] private SpriteRenderer _weaponSprite; //무기 스프라이트
+    
     public Vector2 moveInput; // Actions로부터 받을 Vector2값 저장
     private Vector2 _playerPosition; // transform.position이 Vector3이라서 Vector2로 편하게 쓰려고
     private Vector2 _mousePoint; // 마우스 좌표
-    
-    [SerializeField] private Transform _weaponPivot; // 자식 오브젝트 WeaponPivot의 Transform
-    [SerializeField] private float _weaponRadius = 1f; // WeaponPivot과 Player의 거리
-    [SerializeField] private SpriteRenderer _weaponSprite; //무기 스프라이트
     
     [SerializeField] private GameObject _bulletPrefab; // 총알 prefab
     [SerializeField] private Transform _muzzlePoint; // 총구 위치
@@ -33,6 +39,8 @@ public class PlayerController : MonoBehaviour
         _bodySprite = GetComponent<SpriteRenderer>();
         _playerInput = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
+        
+        _currentHP = _maxHP;
         
         _stateMachine = new StateMachine();
 
@@ -149,5 +157,20 @@ public class PlayerController : MonoBehaviour
     public void SetMove(float value)
     {
         _animator.SetFloat("Move", Mathf.Abs(value));
+    }
+
+    public void TakeDamage(float damage)
+    {
+        _currentHP -= damage;
+        Debug.Log(_currentHP);
+        if (_currentHP <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        Debug.Log("Player 사망");
     }
 }
