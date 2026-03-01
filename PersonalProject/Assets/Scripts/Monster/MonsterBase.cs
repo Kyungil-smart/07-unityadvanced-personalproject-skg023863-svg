@@ -14,7 +14,9 @@ public abstract class MonsterBase : MonoBehaviour , IDamagable
     
     protected float _currentHP;
     protected Transform _playerTransform; // 플레이어 좌표
-
+    protected bool _isMoving;
+    
+    protected StateMachine _stateMachine;
     protected virtual void Awake()
     {
         _currentHP = _maxHP;
@@ -24,7 +26,12 @@ public abstract class MonsterBase : MonoBehaviour , IDamagable
         _bodySprite = GetComponent<SpriteRenderer>();
         
         _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        
+        _stateMachine = new StateMachine();
+
+        _isMoving = true;
     }
+    
     
     public virtual void TakeDamage(float damage)
     {
@@ -45,8 +52,17 @@ public abstract class MonsterBase : MonoBehaviour , IDamagable
     protected virtual void MoveToPlayer()
     {
         if (_playerTransform == null) return;
+
+        if (!_isMoving) return;
+        
         Vector2 dir = (_playerTransform.position - transform.position).normalized;
+        
         _rigidbody2D.linearVelocity = dir * _speed;
+    }
+
+    protected virtual void StopMove()
+    {
+        _rigidbody2D.linearVelocity = Vector2.zero;
     }
 
     // Player를 바라보도록 스프라이트 변경
@@ -65,15 +81,12 @@ public abstract class MonsterBase : MonoBehaviour , IDamagable
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            if (collision.collider.TryGetComponent<IDamagable>(out var damageable))
+            if (collision.collider.TryGetComponent<IDamagable>(out IDamagable damageable))
             {
                 damageable.TakeDamage(_damage);
             }
         }
     }
-    
-    
-    
     public void SetMove(float value)
     {
         _animator.SetFloat("Move", Mathf.Abs(value));

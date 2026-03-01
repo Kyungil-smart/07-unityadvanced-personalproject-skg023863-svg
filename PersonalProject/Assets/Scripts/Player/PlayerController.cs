@@ -15,10 +15,10 @@ public class PlayerController : MonoBehaviour , IDamagable
     [Header("Player의 스탯")] 
     [SerializeField] private float _maxHP = 100f; // Player 최대 체력
     [SerializeField] private float _playerSpeed = 5f; // Player 속도
-    [SerializeField] private float _invincibleTime = 0.5f;
     private float _currentHP; // Player 현재 체력
-    private bool _isInvincible;
-    private WaitForSeconds  _invincibleWait;
+    private bool _isInvincible; // 무적인지 아닌지
+    [SerializeField] private float _invincibleTime = 0.5f; // 무적시간
+    private WaitForSeconds _invincibleWait; // 무적 코루틴
     
     [Header("Player와 무기 사이의 거리")]
     [SerializeField] private float _weaponRadius = 1f; // WeaponPivot과 Player의 거리
@@ -173,6 +173,7 @@ public class PlayerController : MonoBehaviour , IDamagable
         
         _currentHP -= damage;
         
+        //공격 받으면 잠시 무적
         StartCoroutine(InvincibleCoroutine());
         Debug.Log(_currentHP);
         if (_currentHP <= 0)
