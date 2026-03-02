@@ -17,12 +17,13 @@ public class PlayerController : MonoBehaviour , IDamagable
     [SerializeField] private float _playerSpeed = 5f; // Player 속도
     private float _currentHP; // Player 현재 체력
     
+    [SerializeField] private float _invincibleTime = 1f; // 무적시간
     private bool _isInvincible; // 무적인지 아닌지
-    [SerializeField] private float _invincibleTime = 0.5f; // 무적시간
-    private WaitForSeconds _invincibleWait; // 무적 코루틴
+    private WaitForSeconds _invincibleWait; // 무적 코루틴에 사용할 WaitForSeconds
+    [SerializeField] private float _blinkInterval = 0.1f; // 피격시 Player가 반짝거리는 주기
 
-    private bool _isShoting; // 지금 총을 쏠 수 있는지
     [SerializeField] private float _fireRate = 1f; // 총을 쏜 후 다음에 총을 쏠 수 있는 시간
+    private bool _isShoting; // 지금 총을 쏠 수 있는지
     private float _nextFireTime; // Time.time + _fireRate의 합
     
     [Header("Player와 무기 사이의 거리")]
@@ -49,7 +50,7 @@ public class PlayerController : MonoBehaviour , IDamagable
         _animator = GetComponent<Animator>();
         
         _currentHP = _maxHP;
-        _invincibleWait =  new WaitForSeconds(_invincibleTime);
+        _invincibleWait =  new WaitForSeconds(_blinkInterval);
         
         _stateMachine = new StateMachine();
 
@@ -198,7 +199,7 @@ public class PlayerController : MonoBehaviour , IDamagable
         
         _currentHP -= damage;
         
-        //공격 받으면 잠시 무적
+        //공격 받으면 _invincibleTime시간 만큼 무적
         StartCoroutine(InvincibleCoroutine());
         Debug.Log(_currentHP);
         if (_currentHP <= 0)
@@ -206,16 +207,27 @@ public class PlayerController : MonoBehaviour , IDamagable
             Die();
         }
     }
-
+    
     private IEnumerator InvincibleCoroutine()
     {
         _isInvincible = true;
-        // 여기서 깜빡임 효과 추가 가능
 
-        yield return _invincibleWait;
+        float timer = 0f;
 
+        // 무적시간 만큼 Player 반짝이는 효과
+        while (timer < _invincibleTime)
+        {
+            _bodySprite.enabled = false;
+            yield return _invincibleWait;
+
+            _bodySprite.enabled = true;
+            yield return _invincibleWait;
+
+            timer += _blinkInterval * 2;
+        }
+
+        _bodySprite.enabled = true;
         _isInvincible = false;
-        yield break;
     }
 
     public void Die()
