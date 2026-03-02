@@ -16,9 +16,14 @@ public class PlayerController : MonoBehaviour , IDamagable
     [SerializeField] private float _maxHP = 100f; // Player 최대 체력
     [SerializeField] private float _playerSpeed = 5f; // Player 속도
     private float _currentHP; // Player 현재 체력
+    
     private bool _isInvincible; // 무적인지 아닌지
     [SerializeField] private float _invincibleTime = 0.5f; // 무적시간
     private WaitForSeconds _invincibleWait; // 무적 코루틴
+
+    private bool _isShoting; // 지금 총을 쏠 수 있는지
+    [SerializeField] private float _fireRate = 1f; // 총을 쏜 후 다음에 총을 쏠 수 있는 시간
+    private float _nextFireTime; // Time.time + _fireRate의 합
     
     [Header("Player와 무기 사이의 거리")]
     [SerializeField] private float _weaponRadius = 1f; // WeaponPivot과 Player의 거리
@@ -60,6 +65,7 @@ public class PlayerController : MonoBehaviour , IDamagable
     void Update()
     {
         _stateMachine.Update();
+        HandleShooting();
     }
 
     void FixedUpdate()
@@ -77,14 +83,16 @@ public class PlayerController : MonoBehaviour , IDamagable
     {
         _playerInput.actions["Move"].performed += OnMove;
         _playerInput.actions["Move"].canceled += OnMove;
-        _playerInput.actions["Shoot"].performed += OnShoot;
+        _playerInput.actions["Shoot"].started += OnShoot;
+        _playerInput.actions["Shoot"].canceled += OnShoot;
     }
 
     void OnDisable()
     {
         _playerInput.actions["Move"].performed -= OnMove;
         _playerInput.actions["Move"].canceled -= OnMove;
-        _playerInput.actions["Shoot"].performed -= OnShoot;
+        _playerInput.actions["Shoot"].started -= OnShoot;
+        _playerInput.actions["Shoot"].canceled -= OnShoot;
     }
 
     void OnMove(InputAction.CallbackContext ctx)
@@ -94,9 +102,26 @@ public class PlayerController : MonoBehaviour , IDamagable
     
     void OnShoot(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
+        if (ctx.started)
+        {
+            _isShoting = true;
+        }
+
+        if (ctx.canceled)
+        {
+            _isShoting = false;
+        }
+    }
+
+    //총 발사 쿨타임
+    void HandleShooting()
+    {
+        if (!_isShoting) return;
+
+        if (Time.time >= _nextFireTime)
         {
             ShootBullet();
+            _nextFireTime = Time.time + _fireRate;
         }
     }
     
