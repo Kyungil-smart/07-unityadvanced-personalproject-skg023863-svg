@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour , IDamagable
     [SerializeField] private float _maxHP = 100f; // Player 최대 체력
     [SerializeField] private float _playerSpeed = 5f; // Player 속도
     private float _currentHP; // Player 현재 체력
+    [SerializeField] private float _damage = 10f; // 총알 공격력
     
     [SerializeField] private float _invincibleTime = 1f; // 무적시간
     private bool _isInvincible; // 무적인지 아닌지
@@ -131,7 +132,7 @@ public class PlayerController : MonoBehaviour , IDamagable
     {
         Vector2 dir = _muzzlePoint.right;
         GameObject bullet = Instantiate(_bulletPrefab, _muzzlePoint.position, _muzzlePoint.rotation);
-        bullet.GetComponent<BulletFire>().Init(dir);
+        bullet.GetComponent<BulletFire>().Init(dir, _damage);
     }
 
     // Player의 움직임을 담당하는 함수
