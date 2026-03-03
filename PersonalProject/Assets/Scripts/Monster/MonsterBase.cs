@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class MonsterBase : MonoBehaviour , IDamagable
+public abstract class MonsterBase : MonoBehaviour, IDamagable
 {
     //컴포넌트
     protected Rigidbody2D _rigidbody2D;
@@ -15,6 +15,8 @@ public abstract class MonsterBase : MonoBehaviour , IDamagable
     protected float _currentHP;
     protected Transform _playerTransform; // 플레이어 좌표
     protected bool _isMoving;
+
+    public event System.Action OnDeath; // 몬스터가 죽으면 SpawnManager한테 알려줌
     
     protected StateMachine _stateMachine;
     protected virtual void Awake()
@@ -45,6 +47,8 @@ public abstract class MonsterBase : MonoBehaviour , IDamagable
     
     protected virtual void Die()
     {
+        OnDeath?.Invoke();
+        OnDeath = null;
         Destroy(gameObject);
         Debug.Log("몬스터 사망");
     }

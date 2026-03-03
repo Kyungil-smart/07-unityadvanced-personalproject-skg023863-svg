@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BulletFire : MonoBehaviour
 {
-    [SerializeField] private float _bulletSpeed= 13f; // 총알 속도
+    private float _bulletSpeed; // 총알 속도
     [SerializeField] private float _bulletLifeTime = 1f; // 총알 생명주기
     // [SerializeField] private float _damage = 10f;
     private float _damage;
@@ -10,15 +10,14 @@ public class BulletFire : MonoBehaviour
     private float angle;  // 총알 각도 
     
     // 방향(dir)과 damage를 player한테 받아옴
-    public void Init(Vector2 dir, float damage)
+    public void Init(Vector2 dir, float damage, float bulletSpeed)
     {
         _damage = damage;
+        _bulletSpeed = bulletSpeed;
         _dir = dir.normalized;
         
         // 총알이 총구가 바라보는 각도에 따라서 총알도 그에 맞게 회전
         transform.right = _dir;
-        // angle = Mathf.Atan2(_dir.y, _dir.x) * Mathf.Rad2Deg;
-        // transform.rotation = Quaternion.Euler(0, 0, angle);
         
         Destroy(gameObject, _bulletLifeTime);
     }
