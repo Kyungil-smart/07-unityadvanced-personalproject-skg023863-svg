@@ -17,13 +17,14 @@ public class PlayerController : MonoBehaviour , IDamagable
     [SerializeField] private float _playerSpeed = 5f; // Player 속도
     private float _currentHP; // Player 현재 체력
     [SerializeField] private float _damage = 10f; // 총알 공격력
+    [SerializeField] private float _bulletSpeed = 15f; // 총알 속도
     
     [SerializeField] private float _invincibleTime = 1f; // 무적시간
     private bool _isInvincible; // 무적인지 아닌지
     private WaitForSeconds _invincibleWait; // 무적 코루틴에 사용할 WaitForSeconds
     [SerializeField] private float _blinkInterval = 0.1f; // 피격시 Player가 반짝거리는 주기
 
-    [SerializeField] private float _fireRate = 1f; // 총을 쏜 후 다음에 총을 쏠 수 있는 시간
+    [SerializeField] private float _fireRate = 0.5f; // 총을 쏜 후 다음에 총을 쏠 수 있는 시간
     private bool _isShoting; // 지금 총을 쏠 수 있는지
     private float _nextFireTime; // Time.time + _fireRate의 합
     
@@ -132,7 +133,7 @@ public class PlayerController : MonoBehaviour , IDamagable
     {
         Vector2 dir = _muzzlePoint.right;
         GameObject bullet = Instantiate(_bulletPrefab, _muzzlePoint.position, _muzzlePoint.rotation);
-        bullet.GetComponent<BulletFire>().Init(dir, _damage);
+        bullet.GetComponent<BulletFire>().Init(dir, _damage, _bulletSpeed);
     }
 
     // Player의 움직임을 담당하는 함수
@@ -196,6 +197,7 @@ public class PlayerController : MonoBehaviour , IDamagable
 
     public void TakeDamage(float damage)
     {
+        // 무적이면 공격받지 않음
         if (_isInvincible) return;
         
         _currentHP -= damage;
