@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int MaxWaves; // 최대 Wave
 
     private int _waveIndex = -1; // 0부터 시작하려고
+    public int _gold;
 
     private void Awake()
     {
@@ -71,6 +72,11 @@ public class GameManager : MonoBehaviour
     {
         _upgradeUI.SetActive(true);
         Time.timeScale = 0f;
+    }
+
+    public void AddGold(int gold)
+    {
+        _gold += gold;
     }
 
     private void Victory()

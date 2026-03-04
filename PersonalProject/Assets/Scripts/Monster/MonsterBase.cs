@@ -12,9 +12,15 @@ public abstract class MonsterBase : MonoBehaviour, IDamagable
     [SerializeField] protected float _speed; // 몬스터 스피드
     [SerializeField] protected float _damage; // 몬스터 공격력
     
+    [Header("골드량 조절")]
+    protected int _gold; // 몬스터 처치시 얻는 골드
+    [SerializeField] protected int _minGold;
+    [SerializeField] protected int _maxGold;
+    
     protected float _currentHP;
     protected Transform _playerTransform; // 플레이어 좌표
     protected bool _isMoving;
+    
 
     public event System.Action OnDeath; // 몬스터가 죽으면 SpawnManager한테 알려줌
     
@@ -32,6 +38,7 @@ public abstract class MonsterBase : MonoBehaviour, IDamagable
         _stateMachine = new StateMachine();
 
         _isMoving = true;
+        _gold = Random.Range(_minGold, _maxGold);
     }
     
     
@@ -47,6 +54,7 @@ public abstract class MonsterBase : MonoBehaviour, IDamagable
     
     protected virtual void Die()
     {
+        GameManager.Instance.AddGold(_gold);
         OnDeath?.Invoke();
         OnDeath = null;
         Destroy(gameObject);

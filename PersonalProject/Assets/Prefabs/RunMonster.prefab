@@ -205,3 +205,5 @@ MonoBehaviour:
   _maxHP: 100
   _speed: 3
   _damage: 10
+  _minGold: 1
+  _maxGold: 4
