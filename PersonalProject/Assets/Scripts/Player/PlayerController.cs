@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour , IDamagable
     private float _currentHP; // Player 현재 체력
     [SerializeField] private float _damage = 10f; // 총알 공격력
     [SerializeField] private float _bulletSpeed = 15f; // 총알 속도
+    [SerializeField] private float _bulletDistance = 5f; // 총알 사거리
     
     [SerializeField] private float _invincibleTime = 1f; // 무적시간
     private bool _isInvincible; // 무적인지 아닌지
@@ -133,7 +134,7 @@ public class PlayerController : MonoBehaviour , IDamagable
     {
         Vector2 dir = _muzzlePoint.right;
         GameObject bullet = Instantiate(_bulletPrefab, _muzzlePoint.position, _muzzlePoint.rotation);
-        bullet.GetComponent<BulletFire>().Init(dir, _damage, _bulletSpeed);
+        bullet.GetComponent<BulletFire>().Init(dir, _damage, _bulletSpeed, _bulletDistance);
     }
 
     // Player의 움직임을 담당하는 함수
@@ -153,7 +154,7 @@ public class PlayerController : MonoBehaviour , IDamagable
         _playerPosition = transform.position;
         Vector2 dir = _mousePoint - _playerPosition;
         
-        // 방향의 x값이 딱 0(캐릭터 바로 위)일 경우에는 스프라이트 안 바뀜
+        // 방향의 x값이 딱 0(캐릭터 바로 위 혹은 아래)일 경우에는 스프라이트 안 바뀜
         if (dir.x != 0)
         {
             // 방향의 x값이 0보다 작으면 true(좌측 바라봄), 0보다 크면 false(우측 바라봄)
@@ -161,7 +162,7 @@ public class PlayerController : MonoBehaviour , IDamagable
         }
     }
     
-    // 무기의 방향을 마우스 좌표에 따라 스프라이트를 좌우 바꿔주는 함수
+    // 무기의 방향을 마우스 좌표에 따라 움직이고 스프라이트를 좌우 바꿔주는 함수
     void WeaponRotate()
     {
         // 마우스 좌표와 Player좌표간의 방향벡터
@@ -171,6 +172,7 @@ public class PlayerController : MonoBehaviour , IDamagable
         _weaponPivot.position = _playerPosition + dir * _weaponRadius;
         
         // 무기(총구, 칼 끝)가 마우스를 바라보도록(조건 : 스프라이트가 오른쪽으로 향하고 있어야 함)
+        // transform.right는 로컬 x축을 월드 좌표 기준 벡터로 표현한 값
         _weaponPivot.right = dir;
         
         // 마우스 좌표와 Player좌표간의 방향벡터의 x가 0보다 작을 경우 _weaponPivot 반전
