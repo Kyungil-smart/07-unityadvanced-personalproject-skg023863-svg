@@ -32,11 +32,13 @@ public class BulletFire : MonoBehaviour
         BulletDitance();
     }
 
+    // 총 발사 함수
     void FireBullet()
     {
         transform.position += (Vector3)(_dir * _bulletSpeed * Time.deltaTime);
     }
 
+    // 총알이 _distance만큼 날아가면 총알 제거
     void BulletDitance()
     {
         float distance = Vector2.Distance(_startPosition, transform.position);

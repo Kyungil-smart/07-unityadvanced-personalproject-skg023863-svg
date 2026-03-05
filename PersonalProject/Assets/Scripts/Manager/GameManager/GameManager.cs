@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int MaxWaves; // 최대 Wave
 
     private int _waveIndex = -1; // 0부터 시작하려고
-    public int _gold;
+    public int _gold; // 골드 획득 량
 
     private void Awake()
     {
@@ -41,7 +42,7 @@ public class GameManager : MonoBehaviour
         StartWave();
     }
 
-    //UpgardeUI에서 Next Wave클릭시 다음 웨이브 시작
+    //UpgardeUI에서 다음 웨이브 클릭 시 다음 웨이브 시작
     public void StartWave()
     {
         _waveIndex++;
@@ -68,9 +69,12 @@ public class GameManager : MonoBehaviour
         ShowUpgradeUI();
     }
 
+    // UpgradeUI를 보여주는 함수
     private void ShowUpgradeUI()
     {
         _upgradeUI.SetActive(true);
+        
+        // UpgradeUI가 열리면 Player 움직임 멈춤
         Time.timeScale = 0f;
     }
 

@@ -5,5 +5,5 @@ public enum UpgradeType
     speed,
     fireRate,
     bulletSpeed,
-    BulletRange
+    BulletDistance
 }

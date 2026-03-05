@@ -203,9 +203,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StopAndRunMonster
   _maxHP: 100
-  _speed: 5
+  _speed: 7
   _damage: 10
-  _minGold: 2
-  _maxGold: 5
+  _minGold: 4
+  _maxGold: 6
   _moveSeconds: 2
   _stopSeconds: 2
