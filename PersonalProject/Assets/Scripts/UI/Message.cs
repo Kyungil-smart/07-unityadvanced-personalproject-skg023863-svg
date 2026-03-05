@@ -17,7 +17,7 @@ public class Message : MonoBehaviour
     // 골드가 부족하면 false, 충분하면 true 반환
     public bool LookGoldMassage(int gold)
     {
-        if (GameManager.Instance._gold < gold)
+        if (GameManager.Instance.Gold < gold)
         {
             StartCoroutine(MessageCoroutine(_lackGoldMassageText));
             return false;

@@ -16,12 +16,12 @@ public class StopAndRunMonster : MonsterBase
         StartCoroutine(MoveCycle());
     }
 
-    private void Update()
+    protected override void Update()
     {
         base.Update();
         FlipSprite();
     }
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
         base.FixedUpdate();
         if (_isMoving)

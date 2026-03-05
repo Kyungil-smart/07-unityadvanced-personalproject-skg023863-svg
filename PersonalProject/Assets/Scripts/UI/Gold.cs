@@ -12,6 +12,6 @@ public class Gold : MonoBehaviour
 
     private void LookGoldAmount()
     {
-        _goldText.text = $"골드량 : {GameManager.Instance._gold}";
+        _goldText.text = $"골드량 : {GameManager.Instance.Gold}";
     }
 }

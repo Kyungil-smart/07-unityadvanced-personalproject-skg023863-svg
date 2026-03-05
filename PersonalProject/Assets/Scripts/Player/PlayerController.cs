@@ -278,6 +278,6 @@ public class PlayerController : MonoBehaviour , IDamagable
 
     public void Die()
     {
-        Debug.Log("Player 사망");
+        
     }
 }
