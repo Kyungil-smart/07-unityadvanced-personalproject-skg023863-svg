@@ -40,6 +40,16 @@ public abstract class MonsterBase : MonoBehaviour, IDamagable
         _isMoving = true;
         _gold = Random.Range(_minGold, _maxGold);
     }
+
+    protected virtual void Update()
+    {
+        if (Time.timeScale == 0) return;
+    }
+
+    protected virtual void FixedUpdate()
+    {
+        if (Time.timeScale == 0) return;
+    }
     
     
     public virtual void TakeDamage(float damage)

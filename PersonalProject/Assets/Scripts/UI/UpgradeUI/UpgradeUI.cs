@@ -21,7 +21,7 @@ public class UpgradeUI : MonoBehaviour
     [SerializeField] private TMP_Text[] _upgradeValueText; // 업그레이드 수치 표기
     [SerializeField] private TMP_Text[] _upgradeCostText;  // 업그레이드 가격 표기
     
-    private UpgradeValue[]  _upgradeValues =  new UpgradeValue[3]; // 업그레이드 내용을 담아둘 데이터
+    private UpgradeValue[] _upgradeValues = new UpgradeValue[3]; // 업그레이드 내용을 담아둘 데이터
     
     void Awake()
     {
@@ -43,7 +43,8 @@ public class UpgradeUI : MonoBehaviour
         }
         
         Init();
-        GameManager.Instance._gold -= _rerollGold;
+        // GameManager.Instance._gold -= _rerollGold;
+        GameManager.Instance.DeductGold(_rerollGold);
     }
 
     // 새로고침이나, 웨이브 끝나고 UpgradeUI 등장시 사용할 함수
@@ -119,7 +120,8 @@ public class UpgradeUI : MonoBehaviour
         
         //실제 업그레이드가 이루어짐
         _playerUpgrade.ApplyUpgrade(upgrade.data.type, upgrade.value);
-        GameManager.Instance._gold -= upgrade.data.cost;
+        // GameManager.Instance._gold -= upgrade.data.cost;
+        GameManager.Instance.DeductGold(upgrade.data.cost);
         
         // 한 번 구매하고 나면 새로고침하지 않는 이상 구매 불가
         foreach (Button button in _upgradeButtons)
