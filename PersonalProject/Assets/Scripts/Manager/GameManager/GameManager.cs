@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SpawnManager _spawnManager;
     [SerializeField] private GameObject _upgradeUI;
     [SerializeField] private GameObject _VictoryUI;
+    [SerializeField] private WaveUI _waveUI;
     [SerializeField] private int MaxWaves; // 최대 Wave
 
     private int _waveIndex = -1; // 0부터 시작하려고
@@ -52,6 +53,7 @@ public class GameManager : MonoBehaviour
             Victory();
             return;
         }
+        _waveUI.ShowWave(_waveIndex);
         _spawnManager.StartWave(_waveIndex);
     }
 
@@ -82,9 +84,16 @@ public class GameManager : MonoBehaviour
     {
         _gold += gold;
     }
-
+    
+    public void DeductGold(int gold)
+    {
+        _gold -= gold;
+    }
+    
     private void Victory()
     {
-        Debug.Log("Game Clear!");
+        Debug.Log("Victory");
+        // _VictoryUI.SetActive(true);
+        // Time.timeScale = 0f;
     }
 }

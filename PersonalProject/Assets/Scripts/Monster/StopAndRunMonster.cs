@@ -18,10 +18,12 @@ public class StopAndRunMonster : MonsterBase
 
     private void Update()
     {
+        base.Update();
         FlipSprite();
     }
     private void FixedUpdate()
     {
+        base.FixedUpdate();
         if (_isMoving)
         {
             MoveToPlayer();

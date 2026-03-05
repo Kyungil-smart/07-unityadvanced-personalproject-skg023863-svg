@@ -9,18 +9,38 @@ public class SpawnManager : MonoBehaviour
     [Header("몬스터 프리팹")]
     [SerializeField] private MonsterBase _runMonsterPrefab; 
     [SerializeField] private MonsterBase _stopAndRunMonsterPrefab;
+    
+    [Header("몬스터 스폰 딜레이")]
+    private WaitForSeconds _waitForSeconds;
+    [SerializeField] private float _waveDelay = 3f; // _waveDelay 후에 몬스터 스폰 
 
     [Header("웨이브 관리")]
     [SerializeField] public WaveData[] _waves;
 
     private int _aliveCount; // 웨이브 마다 총 몬스터 수
     public System.Action OnWaveClear;
-
     
+    public void Awake()
+    {
+        _waitForSeconds = new WaitForSeconds(_waveDelay);
+    }
     
     // 웨이브 시작 함수
     public void StartWave(int waveIndex)
     {
+        // WaveData data = _waves[waveIndex];
+        //
+        // int totalMonsterCount = data.runMonsterCount + data.stopAndRunMonsterCount;
+        // _aliveCount = totalMonsterCount;
+        //
+        // StartCoroutine(SpawnRoutine(data));
+        StartCoroutine(StartWaveDelay(waveIndex));
+    }
+
+    private IEnumerator StartWaveDelay(int waveIndex)
+    {
+        yield return _waitForSeconds;
+        
         WaveData data = _waves[waveIndex];
 
         int totalMonsterCount = data.runMonsterCount + data.stopAndRunMonsterCount;

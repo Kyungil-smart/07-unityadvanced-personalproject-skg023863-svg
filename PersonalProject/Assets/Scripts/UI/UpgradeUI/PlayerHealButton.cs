@@ -31,8 +31,8 @@ public class PlayerHealButton : MonoBehaviour
         {
             return;
         }
-        
-        GameManager.Instance._gold -= _cost;
+        // GameManager.Instance._gold -= _cost;
+        GameManager.Instance.DeductGold(_cost);
         
         _player.CurrentHP += _heal;
         // 힐량이 초과되면 최대 체력과 같도록
