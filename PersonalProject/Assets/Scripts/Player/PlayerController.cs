@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -75,6 +76,8 @@ public class PlayerController : MonoBehaviour , IDamagable
     
     [SerializeField] private GameObject _bulletPrefab; // 총알 prefab
     [SerializeField] private Transform _muzzlePoint; // 총구 위치
+
+    public Action PlayerDead;
 
     // State 
     public IdleState idle;
@@ -278,6 +281,6 @@ public class PlayerController : MonoBehaviour , IDamagable
 
     public void Die()
     {
-        
+        PlayerDead?.Invoke();
     }
 }

@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -18,7 +20,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] public WaveData[] _waves;
 
     private int _aliveCount; // 웨이브 마다 총 몬스터 수
-    public System.Action OnWaveClear;
+    
+    public Action OnWaveClear;
     
     public void Awake()
     {
@@ -28,12 +31,6 @@ public class SpawnManager : MonoBehaviour
     // 웨이브 시작 함수
     public void StartWave(int waveIndex)
     {
-        // WaveData data = _waves[waveIndex];
-        //
-        // int totalMonsterCount = data.runMonsterCount + data.stopAndRunMonsterCount;
-        // _aliveCount = totalMonsterCount;
-        //
-        // StartCoroutine(SpawnRoutine(data));
         StartCoroutine(StartWaveDelay(waveIndex));
     }
 
