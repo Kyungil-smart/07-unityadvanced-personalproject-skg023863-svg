@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class RunMonster : MonsterBase
 {
-    private void Update()
+    protected override void Update()
     {
         base.Update();
         FlipSprite();
         SetMove(1f);
     }
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
         base.FixedUpdate();
         MoveToPlayer();

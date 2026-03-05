@@ -12,7 +12,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int MaxWaves; // 최대 Wave
 
     private int _waveIndex = -1; // 0부터 시작하려고
-    public int _gold; // 골드 획득 량
+    private int _gold; // 골드 획득 량
+    public int Gold
+    {
+        get { return _gold; }
+    }
 
     private void Awake()
     {
@@ -90,10 +94,10 @@ public class GameManager : MonoBehaviour
         _gold -= gold;
     }
     
+    // 마지막 웨이브 클리어 시 호출됨
     private void Victory()
     {
-        Debug.Log("Victory");
-        // _VictoryUI.SetActive(true);
-        // Time.timeScale = 0f;
+         _VictoryUI.SetActive(true);
+        Time.timeScale = 0f;
     }
 }
