@@ -14,20 +14,55 @@ public class PlayerController : MonoBehaviour , IDamagable
 
     [Header("Player의 스탯")] 
     [SerializeField] private float _maxHP = 100f; // Player 최대 체력
+    public float MaxHP
+    {
+        get { return _maxHP; }
+        set { _maxHP = value; }
+    }
+    [SerializeField] private float _currentHP; // Player 현재 체력
+    public float CurrentHP
+    {
+        get { return _currentHP; }
+        set { _currentHP = value; }
+    }
+    
     [SerializeField] private float _playerSpeed = 5f; // Player 속도
-    private float _currentHP; // Player 현재 체력
+    public float PlayerSpeed
+    {
+        get { return _playerSpeed; }
+        set { _playerSpeed = value; }
+    }
     [SerializeField] private float _damage = 10f; // 총알 공격력
+    public float Damage
+    {
+        get { return _damage; }
+        set { _damage = value; }
+    }
     [SerializeField] private float _bulletSpeed = 15f; // 총알 속도
-    [SerializeField] private float _bulletDistance = 5f; // 총알 사거리
+    public float BulletSpeed
+    {
+        get { return _bulletSpeed; }
+        set { _bulletSpeed = value; }
+    }
+    [SerializeField] private float _bulletDistance = 4f; // 총알 사거리
+    public float BulletDistance
+    {
+        get { return _bulletDistance; }
+        set { _bulletDistance = value; }
+    }
+    [SerializeField] private float _fireRate = 0.5f; // 총을 쏜 후 다음에 총을 쏠 수 있는 시간
+    public float FireRate
+    {
+        get { return _fireRate; }
+        set { _fireRate = value; }
+    }
+    private bool _isShoting; // 지금 총을 쏠 수 있는지
+    private float _nextFireTime; // Time.time + _fireRate의 합
     
     [SerializeField] private float _invincibleTime = 1f; // 무적시간
     private bool _isInvincible; // 무적인지 아닌지
     private WaitForSeconds _invincibleWait; // 무적 코루틴에 사용할 WaitForSeconds
     [SerializeField] private float _blinkInterval = 0.1f; // 피격시 Player가 반짝거리는 주기
-
-    [SerializeField] private float _fireRate = 0.5f; // 총을 쏜 후 다음에 총을 쏠 수 있는 시간
-    private bool _isShoting; // 지금 총을 쏠 수 있는지
-    private float _nextFireTime; // Time.time + _fireRate의 합
     
     [Header("Player와 무기 사이의 거리")]
     [SerializeField] private float _weaponRadius = 1f; // WeaponPivot과 Player의 거리
@@ -68,17 +103,23 @@ public class PlayerController : MonoBehaviour , IDamagable
     }
     void Update()
     {
+        if (Time.timeScale == 0) return;
+        
         _stateMachine.Update();
         HandleShooting();
     }
 
     void FixedUpdate()
     {
+        if (Time.timeScale == 0) return;
+        
         Movement();
     }
 
     void LateUpdate()
     {
+        if (Time.timeScale == 0) return;
+        
         LookMouse();
         WeaponRotate();
     }
