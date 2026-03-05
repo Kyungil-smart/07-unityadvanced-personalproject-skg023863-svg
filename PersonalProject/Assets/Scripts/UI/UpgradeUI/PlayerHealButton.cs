@@ -40,5 +40,6 @@ public class PlayerHealButton : MonoBehaviour
         {
             _player.CurrentHP = _player.MaxHP;
         }
+        _player.OnPlayerHPChanged?.Invoke(_player.CurrentHP, _player.MaxHP);
     }
 }

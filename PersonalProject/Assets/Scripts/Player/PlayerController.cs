@@ -77,7 +77,8 @@ public class PlayerController : MonoBehaviour , IDamagable
     [SerializeField] private GameObject _bulletPrefab; // 총알 prefab
     [SerializeField] private Transform _muzzlePoint; // 총구 위치
 
-    public Action PlayerDead;
+    public Action OnPlayerDead;
+    public Action<float, float> OnPlayerHPChanged;
 
     // State 
     public IdleState idle;
@@ -247,14 +248,22 @@ public class PlayerController : MonoBehaviour , IDamagable
         if (_isInvincible) return;
         
         _currentHP -= damage;
-        
-        //공격 받으면 _invincibleTime시간 만큼 무적
-        StartCoroutine(InvincibleCoroutine());
-        Debug.Log(_currentHP);
+        OnPlayerHPChanged?.Invoke(_currentHP, _maxHP);
         if (_currentHP <= 0)
         {
             Die();
         }
+        
+        //공격 받으면 _invincibleTime시간 만큼 무적
+        StartCoroutine(InvincibleCoroutine());
+        Debug.Log(_currentHP);
+    }
+
+    public void PlayerUpHP(float value)
+    {
+        _currentHP += value;
+        _maxHP += value;
+        OnPlayerHPChanged?.Invoke(_currentHP, _maxHP);
     }
     
     private IEnumerator InvincibleCoroutine()
@@ -281,6 +290,6 @@ public class PlayerController : MonoBehaviour , IDamagable
 
     public void Die()
     {
-        PlayerDead?.Invoke();
+        OnPlayerDead?.Invoke();
     }
 }

@@ -36,7 +36,7 @@ public class Message : MonoBehaviour
         return true;
     }
     
-    // _waitForSecondsRealtime만큼 보여줌
+    // _waitForSecondsRealtime만큼 화면에 보여줌
     private IEnumerator MessageCoroutine(GameObject message)
     {
         message.SetActive(true);
