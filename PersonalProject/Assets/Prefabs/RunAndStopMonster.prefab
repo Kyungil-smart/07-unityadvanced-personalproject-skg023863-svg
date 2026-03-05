@@ -207,5 +207,6 @@ MonoBehaviour:
   _damage: 10
   _minGold: 4
   _maxGold: 6
+  _monsterHitSound: {fileID: 8300000, guid: b1b9467beb858854b9ae9bc48dd2113d, type: 3}
   _moveSeconds: 2
   _stopSeconds: 2

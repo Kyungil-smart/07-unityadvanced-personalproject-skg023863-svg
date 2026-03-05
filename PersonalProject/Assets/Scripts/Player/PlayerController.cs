@@ -77,6 +77,10 @@ public class PlayerController : MonoBehaviour , IDamagable
     [SerializeField] private GameObject _bulletPrefab; // 총알 prefab
     [SerializeField] private Transform _muzzlePoint; // 총구 위치
 
+    [Header("플레이어 사운드")]
+    [SerializeField] private AudioClip _bulletSound; // 총알 발사음
+    [SerializeField] private AudioClip _PlayerHitSound; // 플레이어 피격음
+
     public Action OnPlayerDead;
     public Action<float, float> OnPlayerHPChanged;
 
@@ -177,6 +181,7 @@ public class PlayerController : MonoBehaviour , IDamagable
     // 총알 발사 함수
     void ShootBullet()
     {
+        AudioManager.Instance.PlaySFX(_bulletSound, 0.2f);
         Vector2 dir = _muzzlePoint.right;
         GameObject bullet = Instantiate(_bulletPrefab, _muzzlePoint.position, _muzzlePoint.rotation);
         bullet.GetComponent<BulletFire>().Init(dir, _damage, _bulletSpeed, _bulletDistance);
@@ -247,6 +252,7 @@ public class PlayerController : MonoBehaviour , IDamagable
         // 무적이면 공격받지 않음
         if (_isInvincible) return;
         
+        AudioManager.Instance.PlaySFX(_PlayerHitSound);
         _currentHP -= damage;
         OnPlayerHPChanged?.Invoke(_currentHP, _maxHP);
         if (_currentHP <= 0)

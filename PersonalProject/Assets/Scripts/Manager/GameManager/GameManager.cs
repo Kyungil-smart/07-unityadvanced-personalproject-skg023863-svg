@@ -4,9 +4,10 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
+    
     [SerializeField] private PlayerController _player;
     [SerializeField] private SpawnManager _spawnManager;
+    [SerializeField] private AudioClip _GameSceneBGM;
     [SerializeField] private GameObject _playerDeadUI;
     [SerializeField] private GameObject _upgradeUI;
     [SerializeField] private GameObject _VictoryUI;
@@ -33,7 +34,11 @@ public class GameManager : MonoBehaviour
         MaxWaves = _spawnManager._waves.Length;
         Debug.Log(MaxWaves);
     }
-
+    private void Start()
+    {
+        AudioManager.Instance.PlayBGM(_GameSceneBGM, 0.2f);
+        StartWave();
+    }
     void OnEnable()
     {
         _spawnManager.OnWaveClear += HandleWaveClear;
@@ -45,12 +50,7 @@ public class GameManager : MonoBehaviour
         _spawnManager.OnWaveClear -= HandleWaveClear;
         _player.OnPlayerDead -= PlayerDeadUI;
     }
-
-    private void Start()
-    {
-        StartWave();
-    }
-
+    
     //UpgardeUI에서 다음 웨이브 클릭 시 다음 웨이브 시작
     public void StartWave()
     {
