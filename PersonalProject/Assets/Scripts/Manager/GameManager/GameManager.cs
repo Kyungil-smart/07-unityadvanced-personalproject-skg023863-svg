@@ -4,8 +4,10 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    
+
+    [SerializeField] private PlayerController _player;
     [SerializeField] private SpawnManager _spawnManager;
+    [SerializeField] private GameObject _playerDeadUI;
     [SerializeField] private GameObject _upgradeUI;
     [SerializeField] private GameObject _VictoryUI;
     [SerializeField] private WaveUI _waveUI;
@@ -35,11 +37,13 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         _spawnManager.OnWaveClear += HandleWaveClear;
+        _player.PlayerDead += PlayerDeadUI;
     }
 
     void OnDisable()
     {
         _spawnManager.OnWaveClear -= HandleWaveClear;
+        _player.PlayerDead -= PlayerDeadUI;
     }
 
     private void Start()
@@ -99,5 +103,11 @@ public class GameManager : MonoBehaviour
     {
          _VictoryUI.SetActive(true);
         Time.timeScale = 0f;
+    }
+
+    private void PlayerDeadUI()
+    {
+        Time.timeScale = 0f;
+        _playerDeadUI.SetActive(true);
     }
 }
