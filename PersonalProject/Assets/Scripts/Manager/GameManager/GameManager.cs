@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int MaxWaves; // 최대 Wave
 
     private int _waveIndex = -1; // 0부터 시작하려고
-    private int _gold; // 골드 획득 량
+    public int _gold; // 골드 획득 량
     public int Gold
     {
         get { return _gold; }
@@ -37,13 +37,13 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         _spawnManager.OnWaveClear += HandleWaveClear;
-        _player.PlayerDead += PlayerDeadUI;
+        _player.OnPlayerDead += PlayerDeadUI;
     }
 
     void OnDisable()
     {
         _spawnManager.OnWaveClear -= HandleWaveClear;
-        _player.PlayerDead -= PlayerDeadUI;
+        _player.OnPlayerDead -= PlayerDeadUI;
     }
 
     private void Start()
