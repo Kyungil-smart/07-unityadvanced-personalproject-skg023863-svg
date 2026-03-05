@@ -202,8 +202,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f9df9cfd84c07e48998a552e5d9601c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunMonster
-  _maxHP: 100
+  _maxHP: 130
   _speed: 3
   _damage: 10
   _minGold: 3
   _maxGold: 5
+  _monsterHitSound: {fileID: 8300000, guid: b1b9467beb858854b9ae9bc48dd2113d, type: 3}

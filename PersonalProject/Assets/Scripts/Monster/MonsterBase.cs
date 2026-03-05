@@ -16,6 +16,9 @@ public abstract class MonsterBase : MonoBehaviour, IDamagable
     protected int _gold; // 몬스터 처치시 얻는 골드
     [SerializeField] protected int _minGold;
     [SerializeField] protected int _maxGold;
+
+    [Header("몬스터 사운드")] 
+    [SerializeField] protected AudioClip _monsterHitSound;
     
     protected float _currentHP;
     protected Transform _playerTransform; // 플레이어 좌표
@@ -54,6 +57,7 @@ public abstract class MonsterBase : MonoBehaviour, IDamagable
     
     public virtual void TakeDamage(float damage)
     {
+        AudioManager.Instance.PlaySFX(_monsterHitSound, 0.5f);
         _currentHP -= damage;
         Debug.Log(_currentHP);
         if (_currentHP <= 0)
