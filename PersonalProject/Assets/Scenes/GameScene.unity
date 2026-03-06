@@ -29530,14 +29530,26 @@ MonoBehaviour:
   _stopAndRunMonsterPrefab: {fileID: 7215062418411025512, guid: a4180545a3388d8458e21c63b78c1aa7, type: 3}
   _waveDelay: 3
   _waves:
-  - runMonsterCount: 1
+  - runMonsterCount: 15
     stopAndRunMonsterCount: 0
+    spawnDelay: 3
+  - runMonsterCount: 10
+    stopAndRunMonsterCount: 5
+    spawnDelay: 3
+  - runMonsterCount: 15
+    stopAndRunMonsterCount: 5
+    spawnDelay: 2
+  - runMonsterCount: 12
+    stopAndRunMonsterCount: 10
+    spawnDelay: 2
+  - runMonsterCount: 15
+    stopAndRunMonsterCount: 10
     spawnDelay: 1
-  - runMonsterCount: 1
-    stopAndRunMonsterCount: 0
+  - runMonsterCount: 20
+    stopAndRunMonsterCount: 20
     spawnDelay: 1
-  - runMonsterCount: 1
-    stopAndRunMonsterCount: 0
+  - runMonsterCount: 20
+    stopAndRunMonsterCount: 30
     spawnDelay: 1
 --- !u!1 &1267840677
 GameObject:
@@ -40015,8 +40027,8 @@ MonoBehaviour:
     title: "\uACF5\uACA9\uB825 \uC99D\uAC00"
     value: "\uACF5\uACA9\uB825 + "
     cost: 20
-    minValue: 5
-    maxValue: 10
+    minValue: 2
+    maxValue: 6
   - type: 2
     title: "\uC774\uB3D9\uC18D\uB3C4 \uC99D\uAC00"
     value: "\uC774\uB3D9\uC18D\uB3C4 + "
