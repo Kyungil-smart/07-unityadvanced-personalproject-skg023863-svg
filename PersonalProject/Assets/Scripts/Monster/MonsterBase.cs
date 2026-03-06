@@ -1,4 +1,7 @@
+using System;
+using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public abstract class MonsterBase : MonoBehaviour, IDamagable
 {
@@ -19,13 +22,16 @@ public abstract class MonsterBase : MonoBehaviour, IDamagable
 
     [Header("몬스터 사운드")] 
     [SerializeField] protected AudioClip _monsterHitSound;
+
+    [Header("피격시 반짝이는 시간")] 
+    protected float _blinkTime = 0.1f;
+    private WaitForSeconds _blinkWait;
     
     protected float _currentHP;
     protected Transform _playerTransform; // 플레이어 좌표
     protected bool _isMoving;
     
-
-    public event System.Action OnDeath; // 몬스터가 죽으면 SpawnManager한테 알려줌
+    public event Action OnDeath; // 몬스터가 죽으면 SpawnManager한테 알려줌
     
     protected StateMachine _stateMachine;
     protected virtual void Awake()
@@ -42,6 +48,7 @@ public abstract class MonsterBase : MonoBehaviour, IDamagable
 
         _isMoving = true;
         _gold = Random.Range(_minGold, _maxGold);
+        _blinkWait = new WaitForSeconds(_blinkTime);
     }
 
     protected virtual void Update()
@@ -64,6 +71,14 @@ public abstract class MonsterBase : MonoBehaviour, IDamagable
         {
             Die();
         }
+        StartCoroutine(StartBlink());
+    }
+
+    private IEnumerator StartBlink()
+    {
+        _bodySprite.enabled = false;
+        yield return _blinkWait;
+        _bodySprite.enabled = true;
     }
     
     protected virtual void Die()
