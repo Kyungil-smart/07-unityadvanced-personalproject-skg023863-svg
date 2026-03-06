@@ -74,13 +74,14 @@ public class PlayerController : MonoBehaviour , IDamagable
     private Vector2 _playerPosition; // transform.position이 Vector3이라서 Vector2로 편하게 쓰려고
     private Vector2 _mousePoint; // 마우스 좌표
     
-    [SerializeField] private GameObject _bulletPrefab; // 총알 prefab
+    [SerializeField] private BulletFire _bulletPrefab; // 총알 prefab
     [SerializeField] private Transform _muzzlePoint; // 총구 위치
 
     [Header("플레이어 사운드")]
     [SerializeField] private AudioClip _bulletSound; // 총알 발사음
     [SerializeField] private AudioClip _PlayerHitSound; // 플레이어 피격음
-
+    [SerializeField] private GameObject _pauseUI;
+   
     public Action OnPlayerDead;
     public Action<float, float> OnPlayerHPChanged;
 
@@ -138,6 +139,7 @@ public class PlayerController : MonoBehaviour , IDamagable
         _playerInput.actions["Move"].canceled += OnMove;
         _playerInput.actions["Shoot"].started += OnShoot;
         _playerInput.actions["Shoot"].canceled += OnShoot;
+        _playerInput.actions["Pause"].started += OnPause;
     }
 
     void OnDisable()
@@ -146,6 +148,7 @@ public class PlayerController : MonoBehaviour , IDamagable
         _playerInput.actions["Move"].canceled -= OnMove;
         _playerInput.actions["Shoot"].started -= OnShoot;
         _playerInput.actions["Shoot"].canceled -= OnShoot;
+        _playerInput.actions["Pause"].started -= OnPause;
     }
 
     void OnMove(InputAction.CallbackContext ctx)
@@ -166,6 +169,20 @@ public class PlayerController : MonoBehaviour , IDamagable
         }
     }
 
+    void OnPause(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            OpenPauseUI();
+        }
+    }
+
+    void OpenPauseUI()
+    {
+        Time.timeScale = 0;
+        _pauseUI.SetActive(true);
+    }
+
     //총 발사 쿨타임
     void HandleShooting()
     {
@@ -183,8 +200,8 @@ public class PlayerController : MonoBehaviour , IDamagable
     {
         AudioManager.Instance.PlaySFX(_bulletSound, 0.2f);
         Vector2 dir = _muzzlePoint.right;
-        GameObject bullet = Instantiate(_bulletPrefab, _muzzlePoint.position, _muzzlePoint.rotation);
-        bullet.GetComponent<BulletFire>().Init(dir, _damage, _bulletSpeed, _bulletDistance);
+        BulletFire bullet = Instantiate(_bulletPrefab, _muzzlePoint.position, Quaternion.identity);
+        bullet.Init(dir, _damage, _bulletSpeed, _bulletDistance);
     }
 
     // Player의 움직임을 담당하는 함수
@@ -263,13 +280,6 @@ public class PlayerController : MonoBehaviour , IDamagable
         //공격 받으면 _invincibleTime시간 만큼 무적
         StartCoroutine(InvincibleCoroutine());
         Debug.Log(_currentHP);
-    }
-
-    public void PlayerUpHP(float value)
-    {
-        _currentHP += value;
-        _maxHP += value;
-        OnPlayerHPChanged?.Invoke(_currentHP, _maxHP);
     }
     
     private IEnumerator InvincibleCoroutine()

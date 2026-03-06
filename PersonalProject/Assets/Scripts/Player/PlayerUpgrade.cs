@@ -10,7 +10,9 @@ public class PlayerUpgrade : MonoBehaviour
         switch (type)
         {
             case UpgradeType.maxHP: // 최대 체력 증가
-                _player.PlayerUpHP(value);
+                _player.MaxHP += value;
+                _player.CurrentHP += value;
+                _player.OnPlayerHPChanged?.Invoke(_player.CurrentHP, _player.MaxHP);
                 break;
             
             case UpgradeType.damage: // 공격력 증가
