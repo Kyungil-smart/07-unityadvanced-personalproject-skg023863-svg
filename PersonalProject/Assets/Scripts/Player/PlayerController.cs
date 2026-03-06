@@ -274,6 +274,8 @@ public class PlayerController : MonoBehaviour , IDamagable
         OnPlayerHPChanged?.Invoke(_currentHP, _maxHP);
         if (_currentHP <= 0)
         {
+            _currentHP = 0;
+            OnPlayerHPChanged?.Invoke(_currentHP, _maxHP);
             Die();
         }
         
