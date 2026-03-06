@@ -1,1 +1,10 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=22871634&assignment_repo_type=AssignmentRepo)
+# 게임이름 
+ MonShooter
+ 
+# 조작방법
+이동 : WASD / 위,왼쪽,아래,오른쪽
+조준 : 마우스
+발사 : 마우스 좌클릭
+
+# 게임소개
+동서남북 4방향에서 랜덤으로 등장하는 적들을 물리치고 골드를 획득하여 업그레이드를 통해 모든 웨이브를 클리어 하는것이 목적입니다.
