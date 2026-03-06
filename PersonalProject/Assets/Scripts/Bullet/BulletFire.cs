@@ -3,9 +3,7 @@ using UnityEngine;
 public class BulletFire : MonoBehaviour
 {
     private float _bulletSpeed; // 총알 속도
-    // [SerializeField] private float _bulletLifeTime = 1f; // 총알 생명주기
-    // [SerializeField] private float _damage = 10f;
-    private float _damage;
+    private float _damage; // 총알 공격력
     private Vector2 _dir; // 총알 방향
     private float _angle;  // 총알 각도 
     private Vector2 _startPosition;
@@ -23,7 +21,6 @@ public class BulletFire : MonoBehaviour
         transform.right = _dir;
         
         _startPosition = transform.position;
-        // Destroy(gameObject, _bulletLifeTime);
     }
 
     void Update()

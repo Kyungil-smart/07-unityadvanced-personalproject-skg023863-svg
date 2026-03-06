@@ -8,7 +8,7 @@ public class PlayerHPUI : MonoBehaviour
 
     void Start()
     {
-        _playerHPUI.text = $"{_player.CurrentHP:F1} / {_player.MaxHP:F1}";
+        _playerHPUI.text = $"HP: {_player.CurrentHP:F1} / {_player.MaxHP:F1}";
     }
     void OnEnable()
     {
@@ -22,6 +22,6 @@ public class PlayerHPUI : MonoBehaviour
     
     void ShowPlayerHPUI(float currentHP, float maxHP)
     {
-        _playerHPUI.text = $"{currentHP:F1} / {maxHP:F1}";
+        _playerHPUI.text = $"HP: {currentHP:F1} / {maxHP:F1}";
     }
 }
