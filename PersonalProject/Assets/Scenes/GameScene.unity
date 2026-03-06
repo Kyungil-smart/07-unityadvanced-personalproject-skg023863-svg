@@ -28280,7 +28280,7 @@ MonoBehaviour:
   moveInput: {x: 0, y: 0}
   _bulletPrefab: {fileID: 6975089312398552468, guid: e711970f12a62c141a115f5e3f17246c, type: 3}
   _muzzlePoint: {fileID: 267762364}
-  _bulletSound: {fileID: 8300000, guid: ac7191ea1e6d5614e9f40c018157f451, type: 3}
+  _bulletSound: {fileID: 8300000, guid: 48988f866eb6ee34c895057df09e2776, type: 3}
   _PlayerHitSound: {fileID: 8300000, guid: 860a8f8cdf5b41d489fa2c44687f90d7, type: 3}
   _pauseUI: {fileID: 764925033}
 --- !u!95 &997183082

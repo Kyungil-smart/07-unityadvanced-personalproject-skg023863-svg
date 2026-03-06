@@ -198,7 +198,7 @@ public class PlayerController : MonoBehaviour , IDamagable
     // 총알 발사 함수
     void ShootBullet()
     {
-        AudioManager.Instance.PlaySFX(_bulletSound, 0.2f);
+        AudioManager.Instance.PlaySFX(_bulletSound, 0.1f);
         Vector2 dir = _muzzlePoint.right;
         BulletFire bullet = Instantiate(_bulletPrefab, _muzzlePoint.position, Quaternion.identity);
         bullet.Init(dir, _damage, _bulletSpeed, _bulletDistance);

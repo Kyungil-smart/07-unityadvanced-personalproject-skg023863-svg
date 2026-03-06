@@ -64,7 +64,7 @@ public abstract class MonsterBase : MonoBehaviour, IDamagable
     
     public virtual void TakeDamage(float damage)
     {
-        AudioManager.Instance.PlaySFX(_monsterHitSound, 0.5f);
+        AudioManager.Instance.PlaySFX(_monsterHitSound, 1f);
         _currentHP -= damage;
         Debug.Log(_currentHP);
         if (_currentHP <= 0)
