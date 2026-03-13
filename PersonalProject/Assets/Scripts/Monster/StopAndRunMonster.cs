@@ -3,17 +3,18 @@ using UnityEngine;
 
 public class StopAndRunMonster : MonsterBase
 {
-    [SerializeField] private float _moveSeconds = 2f; // 언제까지 움직일지 시간
-    [SerializeField] private float _stopSeconds = 2f; // 언제까지 멈출지 시간
+    [SerializeField] private float _moveSeconds = 2f; // 몇 초간 움직일지 시간
+    [SerializeField] private float _stopSeconds = 2f; // 몇 초간 멈출지 시간
     
-    private WaitForSeconds _waitMove; // 언제까지 움직일지 코루틴
-    private WaitForSeconds _waitStop; // 언제까지 멈출지 코루틴
+    private WaitForSeconds _waitMove; // 몇 초간 움직일지 코루틴
+    private WaitForSeconds _waitStop; // 몇 초간 멈출지 코루틴
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
         _waitMove = new WaitForSeconds(_moveSeconds);
         _waitStop = new WaitForSeconds(_stopSeconds);
-        StartCoroutine(MoveCycle());
+        // StartCoroutine(MoveCycle());
     }
 
     protected override void Update()
@@ -28,7 +29,7 @@ public class StopAndRunMonster : MonsterBase
         {
             MoveToPlayer();
         }
-        else if (!_isMoving)
+        else
         {
             StopMove();
         }
@@ -51,8 +52,23 @@ public class StopAndRunMonster : MonsterBase
 
     protected override void Die()
     {
-        // 죽으면 코루틴 멈춤
-        StopAllCoroutines();
         base.Die();
+        ObjectPoolManager.Instance.Release(Resources.Load<GameObject>("RunAndStopMonster"), gameObject);
+    }
+
+    public override void OnSpawn()
+    {
+        base.OnSpawn();
+        
+        _isMoving = true;
+        StartCoroutine(MoveCycle());
+    }
+
+    public override void OnDespawn()
+    {
+        base.OnDespawn();
+        
+        StopAllCoroutines();
+        _isMoving = false;
     }
 }

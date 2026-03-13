@@ -3,12 +3,15 @@ using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public abstract class MonsterBase : MonoBehaviour, IDamagable
+public abstract class MonsterBase : MonoBehaviour, IDamagable, IPoolable
 {
     //컴포넌트
     protected Rigidbody2D _rigidbody2D;
     protected Animator _animator;
     protected SpriteRenderer _bodySprite;
+    
+    //[Header("ObjectPool 용 Prefab")]
+    //[SerializeField] protected GameObject _prefab;
     
     [Header("몬스터 스탯")]
     [SerializeField] protected float _maxHP; // 몬스터 최대 체력
@@ -67,11 +70,11 @@ public abstract class MonsterBase : MonoBehaviour, IDamagable
         AudioManager.Instance.PlaySFX(_monsterHitSound, 1f);
         _currentHP -= damage;
         Debug.Log(_currentHP);
+        StartCoroutine(StartBlink());
         if (_currentHP <= 0)
         {
             Die();
         }
-        StartCoroutine(StartBlink());
     }
 
     private IEnumerator StartBlink()
@@ -86,7 +89,7 @@ public abstract class MonsterBase : MonoBehaviour, IDamagable
         GameManager.Instance.AddGold(_gold);
         OnDeath?.Invoke();
         OnDeath = null;
-        Destroy(gameObject);
+        StopAllCoroutines();
         Debug.Log("몬스터 사망");
     }
     
@@ -131,5 +134,16 @@ public abstract class MonsterBase : MonoBehaviour, IDamagable
     public void SetMove(float value)
     {
         _animator.SetFloat("Move", Mathf.Abs(value));
+    }
+
+    public virtual void OnSpawn()
+    {
+        _currentHP = _maxHP;
+        _bodySprite.enabled = true;
+    }
+
+    public virtual void OnDespawn()
+    {
+        StopAllCoroutines();
     }
 }

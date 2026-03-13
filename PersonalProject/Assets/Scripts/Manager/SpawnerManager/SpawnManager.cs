@@ -34,6 +34,7 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(StartWaveDelay(waveIndex));
     }
 
+    // 웨이브가 바로 시작되지 않고 _waveDelay 시간만큼 대기 후 실행
     private IEnumerator StartWaveDelay(int waveIndex)
     {
         yield return _waitForSeconds;
@@ -41,6 +42,7 @@ public class SpawnManager : MonoBehaviour
         WaveData data = _waves[waveIndex];
 
         int totalMonsterCount = data.runMonsterCount + data.stopAndRunMonsterCount;
+        // int totalMonsterCount = (data.runMonsterCount + data.stopAndRunMonsterCount) * 30 * 4;
         _aliveCount = totalMonsterCount;
         
         StartCoroutine(SpawnRoutine(data));
@@ -54,6 +56,7 @@ public class SpawnManager : MonoBehaviour
         for (int i = 0; i < data.runMonsterCount; i++)
         {
             Spawn(_runMonsterPrefab);
+            
             yield return wait;
         }
 
@@ -61,6 +64,7 @@ public class SpawnManager : MonoBehaviour
         for (int i = 0; i < data.stopAndRunMonsterCount; i++)
         {
             Spawn(_stopAndRunMonsterPrefab);
+            
             yield return wait;
         }
         
@@ -72,15 +76,39 @@ public class SpawnManager : MonoBehaviour
     {
         // 스포너 4곳중 랜덤하게 나옴
         Transform spawner = _spawnPoints[Random.Range(0, _spawnPoints.Length)];
-        MonsterBase monster = Instantiate(prefab, spawner.position, Quaternion.identity);
-
+        MonsterBase monster =
+            ObjectPoolManager.Instance.Get
+            (prefab.gameObject,
+                spawner.position,
+                Quaternion.identity).GetComponent<MonsterBase>();
+        
         monster.OnDeath += HandleMonsterDeath;
+        
+        // foreach (Transform spawner in _spawnPoints)
+        // {
+        //     for (int i = 0; i < 30; i++)
+        //     {
+        //         float offsetX = Random.Range(-1.5f, 1.5f);
+        //         float offsetY = Random.Range(-1.5f, 1.5f);
+        //         Vector3 offset = new Vector2(offsetX, offsetY);
+        //         
+        //         // MonsterBase monster = Instantiate(prefab, spawner.position, Quaternion.identity);
+        //         MonsterBase monster =
+        //             ObjectPoolManager.Instance.Get
+        //             (prefab.gameObject,
+        //                 spawner.position + offset,
+        //                 Quaternion.identity).GetComponent<MonsterBase>();
+        //
+        //         monster.OnDeath += HandleMonsterDeath;
+        //     }
+        // }
     }
     
     //몬스터가 죽을 때 마다 _aliveCount가 1씩 적어짐
     private void HandleMonsterDeath()
     {
         _aliveCount--;
+        Debug.Log($"남은 몬스터 수{_aliveCount}");
 
         if (_aliveCount <= 0)
         {

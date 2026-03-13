@@ -238,12 +238,14 @@ public class PlayerController : MonoBehaviour , IDamagable
         // Player와 WeaponPivot간의 거리
         _weaponPivot.position = _playerPosition + dir * _weaponRadius;
         
-        // 무기(총구, 칼 끝)가 마우스를 바라보도록(조건 : 스프라이트가 오른쪽으로 향하고 있어야 함)
-        // transform.right는 로컬 x축을 월드 좌표 기준 벡터로 표현한 값
-        _weaponPivot.right = dir;
-        
-        // 마우스 좌표와 Player좌표간의 방향벡터의 x가 0보다 작을 경우 _weaponPivot 반전
-        if (dir.x < 0)
+        // dir가 바라보는 각도(-180도 ~ 180도), Mathf.Atan2가 라디안(π)이기 때문에 Mathf.Rad2Deg(180/π) 곱해줘야함
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+        // _weaponPivot 회전
+        _weaponPivot.rotation = Quaternion.Euler(0, 0, angle);
+
+        // -90도 ~ 90도일 경우(Player기준 마우스가 왼쪽에 있을경우) _weaponPivot 반전
+        if (angle > 90 || angle < -90)
         {
             _weaponPivot.localScale = new Vector3(1, -1, 1);
         }

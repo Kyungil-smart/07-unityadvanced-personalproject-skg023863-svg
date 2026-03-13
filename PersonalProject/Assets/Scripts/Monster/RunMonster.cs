@@ -13,4 +13,9 @@ public class RunMonster : MonsterBase
         base.FixedUpdate();
         MoveToPlayer();
     }
+    protected override void Die()
+    {
+        base.Die();
+        ObjectPoolManager.Instance.Release(Resources.Load<GameObject>("RunMonster"), gameObject);
+    }
 }
