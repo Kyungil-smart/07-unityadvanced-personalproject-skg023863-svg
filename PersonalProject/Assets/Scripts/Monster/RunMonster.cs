@@ -18,7 +18,8 @@ public class RunMonster : MonsterBase
     {
         base.Die();
         ObjectPoolManager.Instance.Release(
-            Addressables.LoadAssetAsync<GameObject>("RunMonster").WaitForCompletion(), 
+            Addressables.LoadAssetAsync<GameObject>(
+                MonsterAdressable.RunMonster.ToString()).WaitForCompletion(), 
             gameObject);
     }
 }

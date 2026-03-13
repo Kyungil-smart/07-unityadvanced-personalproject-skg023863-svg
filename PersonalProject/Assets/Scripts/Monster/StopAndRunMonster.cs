@@ -55,7 +55,8 @@ public class StopAndRunMonster : MonsterBase
     {
         base.Die();
         ObjectPoolManager.Instance.Release(
-            Addressables.LoadAssetAsync<GameObject>("RunAndStopMonster").WaitForCompletion(), 
+            Addressables.LoadAssetAsync<GameObject>(
+                MonsterAdressable.RunAndStopMonster.ToString()).WaitForCompletion(), 
             gameObject);
     }
 

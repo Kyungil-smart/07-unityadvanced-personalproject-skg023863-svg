@@ -28343,7 +28343,7 @@ MonoBehaviour:
   _maxHP: 100
   _currentHP: 100
   _playerSpeed: 5
-  _damage: 15
+  _damage: 100
   _bulletSpeed: 15
   _bulletDistance: 4
   _fireRate: 0.5
