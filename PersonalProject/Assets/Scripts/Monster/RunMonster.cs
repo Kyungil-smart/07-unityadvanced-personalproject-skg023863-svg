@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public class RunMonster : MonsterBase
 {
@@ -16,6 +17,8 @@ public class RunMonster : MonsterBase
     protected override void Die()
     {
         base.Die();
-        ObjectPoolManager.Instance.Release(Resources.Load<GameObject>("RunMonster"), gameObject);
+        ObjectPoolManager.Instance.Release(
+            Addressables.LoadAssetAsync<GameObject>("RunMonster").WaitForCompletion(), 
+            gameObject);
     }
 }
