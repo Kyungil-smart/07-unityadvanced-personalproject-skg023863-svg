@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public class StopAndRunMonster : MonsterBase
 {
@@ -53,7 +54,9 @@ public class StopAndRunMonster : MonsterBase
     protected override void Die()
     {
         base.Die();
-        ObjectPoolManager.Instance.Release(Resources.Load<GameObject>("RunAndStopMonster"), gameObject);
+        ObjectPoolManager.Instance.Release(
+            Addressables.LoadAssetAsync<GameObject>("RunAndStopMonster").WaitForCompletion(), 
+            gameObject);
     }
 
     public override void OnSpawn()

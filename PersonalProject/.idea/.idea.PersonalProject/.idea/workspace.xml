@@ -6,6 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="dd895bfe-dc3f-47be-bf26-c8c5f0c689d8" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PersonalProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PersonalProject/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AddressableAssetsData/AddressableAssetGroupSortSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AddressableAssetsData/AddressableAssetGroupSortSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AddressableAssetsData/AddressableAssetSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AddressableAssetsData/AddressableAssetSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AddressableAssetsData/AssetGroups/Default Local Group.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AddressableAssetsData/AssetGroups/Default Local Group.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/RunAndStopMonster.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/RunAndStopMonster.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/RunMonster.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/RunMonster.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Monster/MonsterBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Monster/MonsterBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Monster/RunMonster.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Monster/RunMonster.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Monster/StopAndRunMonster.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Monster/StopAndRunMonster.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
