@@ -200,7 +200,9 @@ public class PlayerController : MonoBehaviour , IDamagable
     {
         AudioManager.Instance.PlaySFX(_bulletSound, 0.1f);
         Vector2 dir = _muzzlePoint.right;
-        BulletFire bullet = Instantiate(_bulletPrefab, _muzzlePoint.position, Quaternion.identity);
+        // BulletFire bullet = Instantiate(_bulletPrefab, _muzzlePoint.position, Quaternion.identity);
+        BulletFire bullet = ObjectPoolManager.Instance.Get(
+            _bulletPrefab.gameObject, _muzzlePoint.position, Quaternion.identity).GetComponent<BulletFire>();
         bullet.Init(dir, _damage, _bulletSpeed, _bulletDistance);
     }
 

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public class BulletFire : MonoBehaviour
 {
@@ -42,18 +43,29 @@ public class BulletFire : MonoBehaviour
 
         if (distance > _distance)
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            ObjectPoolManager.Instance.Release(
+                Addressables.LoadAssetAsync<GameObject>(bulletPrefab.Bullet.ToString()).WaitForCompletion(),
+                gameObject);
         }
     }
     
     // Collider에 부딪히면 사라짐
     void OnTriggerEnter2D(Collider2D other)
     {
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        ObjectPoolManager.Instance.Release(
+            Addressables.LoadAssetAsync<GameObject>(bulletPrefab.Bullet.ToString()).WaitForCompletion(),
+            gameObject);
         
         if (other.TryGetComponent<IDamagable>(out IDamagable damageable))
         {
             damageable.TakeDamage(_damage);
         }
+    }
+
+    private enum bulletPrefab
+    {
+        Bullet
     }
 }
